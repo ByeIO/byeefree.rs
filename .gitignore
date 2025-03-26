@@ -1,0 +1,4 @@
+# 忽略大文件
+target/*
+# vendor/*
+assets/ubuntu2204.wasm

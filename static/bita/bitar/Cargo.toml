@@ -1,0 +1,59 @@
+[package]
+name = "bitar"
+version = "0.13.0"
+authors = ["Olle Sandberg <olle@b3rg.se>"]
+license = "MIT"
+edition = '2021'
+description = "bita archive utilities"
+repository = "https://github.com/oll3/bita"
+readme = "README.md"
+keywords = [
+    "sofware-update",
+    "file-synchronization",
+    "delta-update",
+    "differential",
+]
+categories = ["compression", "filesystem"]
+rust-version = "1.71.1"
+
+[build-dependencies]
+prost-build = "0.13"
+
+[dependencies]
+blake2 = "0.10"
+prost = "0.13"
+log = "0.4"
+brotli-decompressor = "4.0"
+brotli = { version = "7.0", default-features = false, features = [
+    "std",
+    "disable-timer",
+], optional = true }
+futures-util = { version = "0.3", default-features = false }
+tokio = { version = "1", features = ["io-util"] }
+bytes = "1.1"
+rust-lzma = { version = "0.6", optional = true }
+zstd = { version = "0.13", optional = true }
+async-trait = "0.1"
+tempfile = { version = "3.2", optional = true }
+num_cpus = { version = "1.13", optional = true }
+
+[dev-dependencies]
+hyper = { version = "1.1.0", features = ["server", "http1"] }
+hyper-util = { version = "0.1.2", features = ["tokio", "server"] }
+http-body-util = "0.1.0"
+rand = { version = "0.8", features = ["std"] }
+tempfile = "3.2"
+tokio = { version = "1", features = ["fs", "macros", "rt-multi-thread"] }
+
+
+[dependencies.reqwest]
+version = "0.12.1"
+default-features = false
+features = ["stream"]
+
+[features]
+default-tls = ["reqwest/default-tls"]
+rustls-tls = ["reqwest/rustls-tls"]
+lzma-compression = ["rust-lzma"]
+zstd-compression = ["zstd"]
+compress = ["brotli", "tempfile", "num_cpus", "futures-util/std"]
