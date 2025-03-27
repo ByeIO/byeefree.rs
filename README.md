@@ -10,7 +10,7 @@ ssh qsbye@[ip地址]
 来连接开发板了.
 
 ## 开发说明
-使用nightly通道的1.85以上版本rustc.
+使用nightly通道的1.85以上版本rustc编译.
 
 ### 项目目录
 
@@ -20,6 +20,7 @@ ssh qsbye@[ip地址]
 
 ### 例程说明
 **文件夹: examples/**
+```yaml
 - clap_byeefree.rs : 命令行程序
 - create_user_group.rs : 创建系统用户和用户组
 - database_login.rs : 数据库+登录用户账户
@@ -42,3 +43,4 @@ ssh qsbye@[ip地址]
 - usb_descriptor.rs : 使用nusb获取usb设备描述符
 - wasmtime_ubuntu.rs : 使用wasmtime运行ubuntu系统
 - wasmtime_yosys.rs : 使用wasmtime运行yosys工具
+```

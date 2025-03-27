@@ -2,9 +2,14 @@
 //!
 //! This crate implements the Wasmtime command line tools.
 
-#![deny(missing_docs)]
+#![allow(missing_docs)]
 
+// 命令解析
 pub mod commands;
 
+// 通用
 #[cfg(feature = "run")]
 pub(crate) mod common;
+
+// cli顶层
+pub mod cli;

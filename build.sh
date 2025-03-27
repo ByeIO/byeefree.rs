@@ -33,6 +33,8 @@ rustup update stable
 rustup update nightly
 cargo-zigbuild run --release --example database_sql
 cargo-zigbuild run --release --example database_login
-cargo-zigbuild run --release --example wasmtime_ubuntu
 cargo-zigbuild run --release --example wasmtime_yosys
 cargo-zigbuild run --release --example wasmtime_yosys > result/wasmtime_yosys.log
+cargo-zigbuild run --release --example wasmtime_cli_wrapper
+cargo-zigbuild run --release --example wasmtime_ubuntu
+cargo-zigbuild run --release --example sysinfo_cpu_mem

@@ -1,8 +1,37 @@
+# [workspace.package]
+# version = "0.0.1"
+# edition = "2024"
+# authors = ["qsbye"]
+# description = "byeefree命令行工具集(适用于四旋翼无人机等机器人任务)."
+# rust-version = "1.85.0"
+
+# [workspace]
+# resolver = '2'
+# members = []
+
 [package]
 name = "byeefree_rs"
+# version.workspace = true
+# edition.workspace = true
+# authors.workspace = true
+# description.workspace = true
+# rust-version.workspace = true
+default-run = "byeefree_rs"
 version = "0.0.1"
 edition = "2024"
 authors = ["qsbye"]
+description = "byeefree命令行工具集(适用于四旋翼无人机等机器人任务)."
+rust-version = "1.85.0"
+
+[[bin]]
+name = "node_a"
+path = "src/bin/node_a.rs"
+doc = false
+
+[[bin]]
+name = "installer"
+path = "src/bin/installer.rs"
+doc = false
 
 [dependencies]
 # base64编码
@@ -37,6 +66,7 @@ fast_rsync = { path = "./static/fast_rsync" }
 wasmtime = { version = "32.0.0", path = "./static/wasmtime/crates/wasmtime" }
 wasmtime-wasi = { version = "32.0.0", path = "./static/wasmtime/crates/wasi" }
 wasi-common = { version = "32.0.0", path = "./static/wasmtime/crates/wasi-common" }
+wasmtime-cli = { version = "32.0.0", path = "./static/wasmtime", features = ["run", "serve", "explore", "wast", "cache", "compile", "cranelift", "objdump"] }
 # wasm开发框架
 xtask-wasm = "0.3.1"
 # 错误处理
@@ -57,3 +87,9 @@ uuid = { version = "1.16.0", features = ["v4"] }
 shell-words = "1.1.0"
 # 字节处理
 bytes = "1.10.1"
+# c标准库(处理stdio)
+libc = "0.2.171"
+# stdio重定向
+stdio-override = "0.2.0"
+# 系统cpu等使用情况
+systemstat = { version = "0.2.4", path = "./static/systemstat" }

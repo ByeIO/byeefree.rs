@@ -1,96 +1,94 @@
 #![allow(unused)]
 
-//! 使用wasmtime运行时调用ubuntu2204.wasm获取`uname -a`指令结果
+//! 封装wasmtime_cli命令
 
 // 标准库
-use std::sync::{Arc, Mutex};
+use std::path::Path;
+use std::error::Error;
+use std::io::Write;
+use std::fs::File;
+use std::os::unix::io::{AsRawFd, FromRawFd};
+
+// POSIX接口
+use libc::{self, c_int, dup, dup2, STDERR_FILENO, STDOUT_FILENO};
 
 // 错误处理
-use anyhow::{Context, Result, Ok};
+use anyhow::Result;
 
-// wasmtime运行时
-use wasmtime::*;
-use wasmtime_wasi::preview1;
-use wasmtime_wasi::{DirPerms, FilePerms, WasiCtxBuilder, DynOutputStream};
-use wasi_common::sync::WasiCtxBuilder as CommonWasiCtxBuilder;
-// use wasmtime_wasi::WasiCtxBuilder;
+// 命令行参数解析
+use clap::{Parser, Subcommand};
 
-// 字节处理
-use bytes::Bytes;
+// 处理复杂命令
+use shell_words;
+
+// wasmtime-cli的接口(魔改wasmtime_cli库)
+use wasmtime_cli::cli::Wasmtime;
 
 // 嵌入文件
 use embed_file::embed_bytes;
 
-// 复杂命令处理
-use shell_words;
+// 临时文件
+use tempfile::tempdir;
 
-/// WASM命令执行上下文
-pub struct WasmtimeCli {
-    /// 存储编译后的WASM二进制模块
-    wasm_module: Vec<u8>,
-}
-
+/* start 封装wasmtime-cli */
+/// 可以使用例如`WasmtimeCli::run("run test.wasm")?;`达到命令行的`wasmtime run test.wasm`同样效果.
+/// 类似于std::process::Command执行shell命令的效果, 但是无需安装wasmtime.
+pub struct WasmtimeCli;
 impl WasmtimeCli {
-    pub fn init(wasm_binary: &[u8]) -> Self {
-        Self {
-            wasm_module: wasm_binary.to_vec(),
-        }
-    }
-
-    pub fn run(&self, command: &str) -> Result<String> {
-        let engine = Engine::default();
-        let module = Module::from_binary(&engine, &self.wasm_module)
-            .context("加载WASM模块失败")?;
-
-        // 构建WASI上下文
-        let mut wasi_builder = WasiCtxBuilder::new();
-        wasi_builder
-            .args(&shell_words::split(command).context("命令解析失败")?)
-            // 继承宿主标准输入输出
-            .inherit_stdio()
-            // 继承宿主的网络到内部网络
-            .inherit_network()
-            // 使用wasi-p1标准
-            .build_p1();
-
-        let wasi_ctx = wasi_builder.build();
-
-        // 链接wasm引擎
-        let mut store = Store::new(&engine, wasi_ctx);
-        let mut linker = Linker::new(&engine);
-        wasmtime_wasi::preview1::add_to_linker_sync(&mut linker, |ctx| ctx)
-            .context("链接WASI失败")?;
-
-        // 实例化模块
-        let instance = linker.instantiate(&mut store, &module)
-            .context("实例化模块失败")?;
-
-        // 获取入口函数
-        let start_func = instance.get_typed_func::<(), ()>(&mut store, "_start")
-            .context("获取入口函数失败")?;
-
-        start_func.call(&mut store, ()).context("执行失败")?;
-
-        // 已经继承内部stdio了, 所以直接获取系统stdout即可
-        
-        
-        
+    pub fn run(command_line: &str) -> Result<()> {
+        let args = shell_words::split(command_line)?;
+        let full_args = std::iter::once("wasmtime".to_string()).chain(args);
+        let wasmtime = Wasmtime::try_parse_from(full_args)?;
+        wasmtime.execute()
     }
 }
+/* end 封装wasmtime-cli */
 
+fn main()->anyhow::Result<(), anyhow::Error>{
+    // 修改后的代码段
+    use stdio_override::{StdoutOverride, StderrOverride};
+    
+    // 嵌入二进制文件到编译产物中 
+    let mut ubuntu_wasm_bytes = embed_bytes!("../assets/ubuntu2204.wasm");
+    
+    // 构造临时文件
+    let temp_dir = tempdir().expect("创建临时目录失败");
+    let ubuntu_wasm_file_path = temp_dir.path().join("ubuntu2204.wasm");
+    
+    // 将嵌入的字节写入临时文件
+    let mut ubuntu_wasm_file = std::fs::File::create(&ubuntu_wasm_file_path).expect("创建临时文件失败");
+    ubuntu_wasm_file.write_all(&ubuntu_wasm_bytes).expect("写入临时文件失败");
+    
+    // 获取当前目录
+    let current_dir = std::env::current_dir()?.display().to_string();
 
-fn main() -> Result<()> {
-    // 内嵌WASM二进制文件（编译时打包进可执行文件）
-    let wasm_bytes = embed_bytes!("../assets/ubuntu2204.wasm");
+    // 创建临时文件捕获输出
+    let output_tempdir = tempdir()?;
+    let output_path = output_tempdir.path().join("wasm_output.txt");
     
-    // 初始化执行上下文
-    let wasm_cli = WasmtimeCli::init(wasm_bytes.as_ref());
-    
-    // 执行命令（等效于命令行：wasmtime ubuntu2204.wasm uname -a）
-    let output = wasm_cli.run("uname -a")?;
-    
-    // 打印结果
-    println!("{}", output.trim_end());
+    // // 重定向标准输出和错误到文件 
+    // let guard_stdout = StdoutOverride::from_file(&output_path)?;
+    // let guard_stderr = StderrOverride::from_file(&output_path)?;
 
-    Ok(())
+    // 等效于`wasmtime run --dir $PWD::/home ubuntu2204.wasm bash -c 'ls && echo "hello from ubuntu" && uname -a'`
+    let run_result = WasmtimeCli::run(&format!(
+        r#"run --dir {}::/home {} bash -c 'ls && echo "hello from ubuntu" && uname -a'"#,
+        current_dir,
+        ubuntu_wasm_file_path.display()
+    ));
+    
+    // // 显式释放守卫以恢复原始输出（作用域结束时也会自动释放）
+    // drop(guard_stdout);
+    // drop(guard_stderr);
+    
+    // 读取并检查输出
+    let output = std::fs::read_to_string(&output_path)?;
+    println!("#######\n{}######\n", output);
+    if output.contains("Linux localhost 6.1.0") {
+        println!("执行成功，已找到stdout字符串，特征识别成功");
+    }
+    
+    run_result?;
+    
+    anyhow::Ok(())
 }
