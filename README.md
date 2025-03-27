@@ -35,4 +35,10 @@ ssh qsbye@[ip地址]
 - sysinfo_cpu_mem.rs : 查看系统CPU占用率及内存使用情况
 - tap_interface.rs : 使用TAP虚拟网卡接口
 - tap_tcp_udp_bridge.rs : 虚拟网桥桥接tcp, udp
--
+- tap_virtual_net.rs : TAP虚拟网桥
+- tempfile.rs : 创建临时文件
+- udp_base64.rs : udp包使用base64编码
+- udp_tcp_multi_package.rs : 分包传输超过MTU的tcp和udp包
+- usb_descriptor.rs : 使用nusb获取usb设备描述符
+- wasmtime_ubuntu.rs : 使用wasmtime运行ubuntu系统
+- wasmtime_yosys.rs : 使用wasmtime运行yosys工具
