@@ -94,11 +94,12 @@ fn main() -> Result<()> {
     match start.call(&mut store, ()) {
         std::result::Result::Ok(_) => {
             println!("执行成功");
-            Ok(())
+            std::result::Result::Ok(())
         }
         std::result::Result::Err(_) => {
-            Ok(())
+            std::result::Result::Ok(())
         }
-    }
+    };
     
+    return std::result::Result::Ok(())
 }

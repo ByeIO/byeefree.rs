@@ -12,16 +12,7 @@ use log::{info, error, LevelFilter};
 // 标准库
 use std::time::Instant;
 
-// 版本号
-const VERSION : &str = "0.0.1";
-
-/// 命令解析器入口
-pub fn command_parser(){
-    // 解析命令
-    let args = ByeefreeCommand::parse();
-}
-
-/// Byeefree命令的参数
+/// 最顶层byeefree命令
 #[derive(Parser, Debug)]
 #[command(name = "byeefree")]
 #[command(bin_name = "byeefree")]
@@ -29,7 +20,7 @@ pub fn command_parser(){
 pub struct ByeefreeCommand {
     // 使用Subcommand来定义子命令
     #[command(subcommand)]
-    command: Commands,
+    pub command: Option<Commands>,
 }
 
 /// 定义子命令
@@ -38,7 +29,7 @@ pub enum Commands {
     /// 账户
     Account {
         #[command(subcommand)]
-        action: AccountCommands,
+        command: Option<AccountCommands>,
     },
     
     /// 查看日志
@@ -47,7 +38,7 @@ pub enum Commands {
     /// 实用工具
     Util {
         #[command(subcommand)]
-        util: UtilCommands,
+        command: UtilCommands,
     },
     
     /// 机器人框架
@@ -58,6 +49,17 @@ pub enum Commands {
     
     /// rsync远程文件同步
     Rsync,
+    
+    /// ubuntu容器(wasm)
+    Ubuntu{
+        /// shell命令（直接使用时）
+        #[arg(short = 'c')]
+        commands: Option<String>,
+        
+        /// 子命令
+        #[command(subcommand)]
+        command: Option<UbuntuCommands>,
+    },
 }
 
 /// 账户子命令
@@ -66,21 +68,24 @@ pub enum AccountCommands {
     /// 登录账户
     Login {
         /// 账户名称
-        account_name: String,
+        name: Option<String>,
     },
     /// 注册账户
     Register {
         /// 账户名称
-        account_name: String,
+        name: Option<String>,
     },
 }
 
-/// ubuntu虚拟机命令
-#[derive(Parser, Debug)]
-pub struct UbuntuCommands {
-    /// shell命令
-    #[arg(short = 'c', last = true)]
-    commands: String,
+/// ubuntu虚拟机命令(ubuntu run -c "命令"或者ubuntu -c "命令")
+#[derive(Subcommand, Debug)]
+pub enum UbuntuCommands {
+    /// 运行命令（显式使用run子命令）
+    Run {
+        /// shell命令
+        #[arg(short = 'c', last = true)]
+        commands: Option<String>,
+    },
 }
 
 /// 实用工具命令
@@ -98,7 +103,7 @@ pub enum UtilCommands {
     /// 角色设置
     Role {
         /// 角色类型
-        role_type: String,
+        role: String,
     },
 }
 

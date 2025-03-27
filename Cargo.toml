@@ -22,6 +22,7 @@ edition = "2024"
 authors = ["qsbye"]
 description = "byeefree命令行工具集(适用于四旋翼无人机等机器人任务)."
 rust-version = "1.85.0"
+build = "build.rs"
 
 [[bin]]
 name = "byeefree"
@@ -95,3 +96,10 @@ stdio-override = "0.2.0"
 systemstat = { version = "0.2.4", path = "./static/systemstat" }
 # 日志记录
 log = "0.4.27"
+# 时间格式化输出
+chrono = "0.4.40"
+
+# build.rs依赖
+[build-dependencies]
+# 时间格式化输出
+chrono = "0.4.40"

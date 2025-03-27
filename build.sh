@@ -42,3 +42,9 @@ cargo-zigbuild run --release --example clap_example_derive
 cargo-zigbuild run --release --example clap_byeefree
 # 正式文件
 cargo-zigbuild run --release --bin byeefree
+cargo-zigbuild run --bin byeefree
+cargo-zigbuild run --release --bin byeefree ubuntu -c "uname -a"
+cargo-zigbuild run --bin byeefree ubuntu -c "touch /home/hello_ubuntu"
+cargo-zigbuild run --bin byeefree ubuntu -c "uname -a"
+RUST_BACKTRACE=1 cargo test
+git rev-parse --short HEAD

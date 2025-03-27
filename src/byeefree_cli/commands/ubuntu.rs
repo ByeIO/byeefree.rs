@@ -30,16 +30,15 @@ use embed_file::embed_bytes;
 // 临时文件
 use tempfile::tempdir;
 
-pub fn ubuntu_command()->anyhow::Result<(), anyhow::Error>{
-    // 修改后的代码段
-    use stdio_override::{StdoutOverride, StderrOverride};
-    
+/// ubuntu命令调用封装
+pub fn ubuntu_command(bash_command: String)->anyhow::Result<(), anyhow::Error>{    
     // 嵌入二进制文件到编译产物中 
     let mut ubuntu_wasm_bytes = embed_bytes!("../../../assets/ubuntu2204.wasm");
     
     // 构造临时文件
     let temp_dir = tempdir().expect("创建临时目录失败");
     let ubuntu_wasm_file_path = temp_dir.path().join("ubuntu2204.wasm");
+    println!("ubuntu临时目录: {:#?}", ubuntu_wasm_file_path);
     
     // 将嵌入的字节写入临时文件
     let mut ubuntu_wasm_file = std::fs::File::create(&ubuntu_wasm_file_path).expect("创建临时文件失败");
@@ -47,15 +46,19 @@ pub fn ubuntu_command()->anyhow::Result<(), anyhow::Error>{
     
     // 获取当前目录
     let current_dir = std::env::current_dir()?.display().to_string();
+    println!("ubuntu工作目录: {}", current_dir);
 
     // 等效于`wasmtime run --dir $PWD::/home ubuntu2204.wasm bash -c 'ls && echo "hello from ubuntu" && uname -a'`
-    let run_result = WasmtimeCli::run(&format!(
-        r#"run --dir {}::/home {} bash -c 'ls && echo "hello from ubuntu" && uname -a'"#,
+    let command_merged = format!(
+        r#"run --dir {}::/home {} bash -c '{}'"#,
         current_dir,
-        ubuntu_wasm_file_path.display()
-    ));
+        ubuntu_wasm_file_path.display(),
+        bash_command
+    );
+    // 获取结果
+    let run_result = WasmtimeCli::run(&command_merged);
     
-    run_result?;
+    println!("ubuntu命令运行状态: {:#?}", run_result);
     
     anyhow::Ok(())
 }
