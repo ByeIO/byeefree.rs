@@ -8,3 +8,31 @@
 ssh qsbye@[ip地址]
 ```
 来连接开发板了.
+
+## 开发说明
+使用nightly通道的1.85以上版本rustc.
+
+### 项目目录
+
+
+### 代码目录说明
+
+
+### 例程说明
+**文件夹: examples/**
+- clap_byeefree.rs : 命令行程序
+- create_user_group.rs : 创建系统用户和用户组
+- database_login.rs : 数据库+登录用户账户
+- database_sql.rs : 数据库基本操作
+- embed_file.rs : 内嵌二进制文件
+- log_file_service.rs : 写入当前时间到日志
+- nusb_attach.rs : 使用nusb连接usb设备
+- nusb_control.rs : 使用nusb控制usb设备端点
+- read_write_usb_cdc.rs : 使用nusb读写usb-cdc-acm虚拟串口
+- service_installer.rs : 自动安装系统服务
+- sm4_encrypt.rs : SM4加密解密
+- sm9_encrypy.rs : SM9加密解密
+- sysinfo_cpu_mem.rs : 查看系统CPU占用率及内存使用情况
+- tap_interface.rs : 使用TAP虚拟网卡接口
+- tap_tcp_udp_bridge.rs : 虚拟网桥桥接tcp, udp
+-

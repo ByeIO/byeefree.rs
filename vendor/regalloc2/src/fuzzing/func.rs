@@ -26,7 +26,6 @@ pub struct InstData {
     op: InstOpcode,
     operands: Vec<Operand>,
     clobbers: Vec<PReg>,
-    is_safepoint: bool,
 }
 
 impl InstData {
@@ -35,7 +34,6 @@ impl InstData {
             op: InstOpcode::Branch,
             operands: vec![],
             clobbers: vec![],
-            is_safepoint: false,
         }
     }
     pub fn ret() -> InstData {
@@ -43,7 +41,6 @@ impl InstData {
             op: InstOpcode::Ret,
             operands: vec![],
             clobbers: vec![],
-            is_safepoint: false,
         }
     }
 }
@@ -101,14 +98,6 @@ impl Function for Func {
 
     fn branch_blockparams(&self, block: Block, _: Inst, succ: usize) -> &[VReg] {
         &self.block_params_out[block.index()][succ][..]
-    }
-
-    fn requires_refs_on_stack(&self, insn: Inst) -> bool {
-        self.insts[insn.index()].is_safepoint
-    }
-
-    fn reftype_vregs(&self) -> &[VReg] {
-        &self.reftype_vregs[..]
     }
 
     fn debug_value_labels(&self) -> &[(VReg, Inst, Inst, u32)] {
@@ -172,7 +161,7 @@ impl FuncBuilder {
         let b = Block::new(self.f.blocks.len());
         self.f
             .blocks
-            .push(InstRange::forward(Inst::new(0), Inst::new(0)));
+            .push(InstRange::new(Inst::new(0), Inst::new(0)));
         self.f.block_preds.push(vec![]);
         self.f.block_succs.push(vec![]);
         self.f.block_params_in.push(vec![]);
@@ -199,13 +188,20 @@ impl FuncBuilder {
     }
 
     fn compute_doms(&mut self) {
-        self.postorder = postorder::calculate(self.f.blocks.len(), Block::new(0), |block| {
-            &self.f.block_succs[block.index()][..]
-        });
-        self.idom = domtree::calculate(
+        let f = &self.f;
+        postorder::calculate(
             self.f.blocks.len(),
-            |block| &self.f.block_preds[block.index()][..],
+            Block::new(0),
+            &mut vec![],
+            &mut self.postorder,
+            |block| &f.block_succs[block.index()][..],
+        );
+        domtree::calculate(
+            self.f.blocks.len(),
+            |block| &f.block_preds[block.index()][..],
             &self.postorder[..],
+            &mut vec![],
+            &mut self.idom,
             Block::new(0),
         );
     }
@@ -217,7 +213,7 @@ impl FuncBuilder {
                 self.f.insts.push(inst.clone());
             }
             let end_inst = self.f.insts.len();
-            *blockrange = InstRange::forward(Inst::new(begin_inst), Inst::new(end_inst));
+            *blockrange = InstRange::new(Inst::new(begin_inst), Inst::new(end_inst));
         }
 
         self.f
@@ -471,27 +467,25 @@ impl Func {
                         let i = u.int_in_range(0..=(operands.len() - 1))?;
                         let op = operands[i];
                         let fixed_reg = PReg::new(u.int_in_range(0..=62)?, op.class());
+                        if op.kind() == OperandKind::Def && op.pos() == OperandPos::Early {
+                            // Early-defs with fixed constraints conflict with
+                            // any other fixed uses of the same preg.
+                            if fixed_late.contains(&fixed_reg) {
+                                break;
+                            }
+                        }
+                        if op.kind() == OperandKind::Use && op.pos() == OperandPos::Late {
+                            // Late-use with fixed constraints conflict with
+                            // any other fixed uses of the same preg.
+                            if fixed_early.contains(&fixed_reg) {
+                                break;
+                            }
+                        }
                         let fixed_list = match op.pos() {
                             OperandPos::Early => &mut fixed_early,
                             OperandPos::Late => &mut fixed_late,
                         };
                         if fixed_list.contains(&fixed_reg) {
-                            break;
-                        }
-                        if op.kind() != OperandKind::Def && op.pos() == OperandPos::Late {
-                            // Late-uses/mods with fixed constraints
-                            // can't be allowed if we're allowing
-                            // different constraints at Early and
-                            // Late, because we can't move something
-                            // into a location between Early and
-                            // Late. Differing constraints only make
-                            // sense if the instruction itself
-                            // produces the newly-constrained values.
-                            break;
-                        }
-                        if op.kind() != OperandKind::Use && op.pos() == OperandPos::Early {
-                            // Likewise, we can *only* allow uses for
-                            // fixed constraints at Early.
                             break;
                         }
                         fixed_list.push(fixed_reg);
@@ -517,19 +511,12 @@ impl Func {
                     )));
                 }
 
-                let is_safepoint = opts.reftypes
-                    && operands
-                        .iter()
-                        .all(|op| !builder.f.reftype_vregs.contains(&op.vreg()))
-                    && bool::arbitrary(u)?;
-
                 builder.add_inst(
                     Block::new(block),
                     InstData {
                         op: InstOpcode::Op,
                         operands,
                         clobbers,
-                        is_safepoint,
                     },
                 );
                 avail.push(vreg);
@@ -585,9 +572,6 @@ impl Func {
 impl core::fmt::Debug for Func {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         write!(f, "{{\n")?;
-        for vreg in self.reftype_vregs() {
-            write!(f, "  REF: {}\n", vreg)?;
-        }
         for (i, blockrange) in self.blocks.iter().enumerate() {
             let succs = self.block_succs[i]
                 .iter()
@@ -622,9 +606,6 @@ impl core::fmt::Debug for Func {
                 i, params_in, succs, preds
             )?;
             for inst in blockrange.iter() {
-                if self.requires_refs_on_stack(inst) {
-                    write!(f, "    -- SAFEPOINT --\n")?;
-                }
                 write!(
                     f,
                     "    inst{}: {:?} ops:{:?} clobber:{:?}\n",

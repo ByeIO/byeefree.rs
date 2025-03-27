@@ -1,0 +1,46 @@
+# E021-09: TRIM function
+
+query T
+SELECT TRIM ( 'foo' )
+----
+foo
+
+query B
+SELECT TRIM ( 'foo' FROM 'foo' ) = ''
+----
+true
+
+query B
+SELECT TRIM ( BOTH 'foo' FROM 'foo' ) = ''
+----
+true
+
+query T
+SELECT TRIM ( BOTH 'foo' )
+----
+foo
+
+query T
+SELECT TRIM ( '' FROM 'foo' )
+----
+foo
+
+query B
+SELECT TRIM ( LEADING 'foo' FROM 'foo' ) = ''
+----
+true
+
+query T
+SELECT TRIM ( LEADING 'foo' )
+----
+foo
+
+query B
+SELECT TRIM ( TRAILING 'foo' FROM 'foo' ) = ''
+----
+true
+
+query T
+SELECT TRIM ( TRAILING 'foo' )
+----
+foo

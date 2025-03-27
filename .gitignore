@@ -2,3 +2,5 @@
 target/*
 # vendor/*
 assets/ubuntu2204.wasm
+assets/ubuntu2204.wasmu
+assets/ubuntu2204.cwasm

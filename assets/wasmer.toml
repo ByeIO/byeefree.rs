@@ -1,0 +1,19 @@
+[package]
+name = 'assets'
+version = '0.1.0'
+description = 'Description for package assets'
+
+# See more keys and definitions at https://docs.wasmer.io/registry/manifest
+
+[[module]]
+name = 'assets'
+source = 'utuntu2204.wasm'
+abi = 'wasi'
+
+[module.interfaces]
+wasi = '0.1.0-unstable'
+
+[[command]]
+name = 'assets'
+module = 'assets'
+runner = 'wasi'

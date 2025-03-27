@@ -1,0 +1,20 @@
+[package]
+name = "sm4-gcm"
+version = "0.1.2"
+edition = "2021"
+authors = ["Hatter Jiang"]
+repository = "https://git.hatter.ink/hatter/sm4-gcm"
+description = "SM4-GCM Library"
+license = "MIT OR Apache-2.0"
+keywords = ["crypto", "gcm", "sm4", "sm4-gcm", "stream"]
+categories = ["cryptography"]
+
+
+[dependencies]
+ghash = { version = "0.5.0", features = ["zeroize"] }
+sm4 = { version = "0.5.1", features = ["zeroize"] }
+zeroize = "1.6.0"
+
+[dev-dependencies]
+hex = "0.4.3"
+benchmark-simple = "0.1.8"

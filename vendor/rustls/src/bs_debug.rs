@@ -1,4 +1,4 @@
-use core::fmt;
+use std::fmt;
 
 /// Alternative implementation of `fmt::Debug` for byte slice.
 ///
@@ -12,8 +12,8 @@ use core::fmt;
 /// `BsDebug` is not a part of public API of bytes crate.
 pub(crate) struct BsDebug<'a>(pub(crate) &'a [u8]);
 
-impl fmt::Debug for BsDebug<'_> {
-    fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error> {
+impl<'a> fmt::Debug for BsDebug<'a> {
+    fn fmt(&self, fmt: &mut fmt::Formatter) -> Result<(), fmt::Error> {
         write!(fmt, "b\"")?;
         for &c in self.0 {
             // https://doc.rust-lang.org/reference.html#byte-escapes
@@ -40,10 +40,7 @@ impl fmt::Debug for BsDebug<'_> {
 }
 
 #[cfg(test)]
-mod tests {
-    use std::format;
-    use std::prelude::v1::*;
-
+mod test {
     use super::BsDebug;
 
     #[test]

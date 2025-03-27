@@ -20,5 +20,19 @@ cargo-zigbuild run --release --example tap_interface
 cargo-zigbuild run --release --example nusb_attach
 cargo-zigbuild run --release --example nusb_control
 cargo-zigbuild run --release --example read_write_usb_cdc
-cargo-zigbuild run --example wasmer_ubuntu
+cargo-zigbuild run --example wasmtime_ubuntu
 cargo-zigbuild run --release --example clap_byeefree -- -v
+wasmtime assets/ubuntu2204.wasm uname -a
+wasmtime assets/ubuntu2204.wasm bash
+cargo-zigbuild run --example sm4_encrypt
+cargo-zigbuild run --release --example tempfile
+cargo-zigbuild run --release --example sm9_encrypt > result/sm9_encrypt.log
+rustup component remove --toolchain stable rust-std-wasm-wasi
+rustup component remove --toolchain nightly rust-std-wasm32-wasi
+rustup update stable
+rustup update nightly
+cargo-zigbuild run --release --example database_sql
+cargo-zigbuild run --release --example database_login
+cargo-zigbuild run --release --example wasmtime_ubuntu
+cargo-zigbuild run --release --example wasmtime_yosys
+cargo-zigbuild run --release --example wasmtime_yosys > result/wasmtime_yosys.log

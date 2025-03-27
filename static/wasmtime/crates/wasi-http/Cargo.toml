@@ -1,0 +1,43 @@
+[package]
+name = "wasmtime-wasi-http"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository = "https://github.com/bytecodealliance/wasmtime"
+license = "Apache-2.0 WITH LLVM-exception"
+description = "Experimental HTTP library for WebAssembly in Wasmtime"
+
+[lints]
+workspace = true
+
+[dependencies]
+anyhow = { workspace = true }
+async-trait = { workspace = true }
+bytes = { workspace = true }
+futures = { workspace = true, default-features = false }
+hyper = { workspace = true, features = ["full"] }
+tokio = { workspace = true, features = [
+    "net",
+    "rt-multi-thread",
+    "time",
+] }
+http = { workspace = true }
+http-body = { workspace = true }
+http-body-util = { workspace = true }
+tracing = { workspace = true }
+wasmtime-wasi = { workspace = true }
+wasmtime = { workspace = true, features = ['component-model'] }
+tokio-rustls = { workspace = true }
+rustls = { workspace = true }
+webpki-roots = { workspace = true }
+
+[dev-dependencies]
+test-programs-artifacts = { workspace = true }
+test-log = { workspace = true }
+tracing-subscriber = { workspace = true }
+wasmtime = { workspace = true, features = ['cranelift'] }
+tokio = { workspace = true, features = ['macros'] }
+futures = { workspace = true, default-features = false, features = ['alloc'] }
+sha2 = "0.10.2"
+base64 = { workspace = true }

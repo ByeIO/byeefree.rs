@@ -15,11 +15,17 @@ pub mod domtree {
 pub mod postorder {
     pub use crate::postorder::*;
 }
+pub mod moves {
+    pub use crate::moves::*;
+}
 pub mod cfg {
     pub use crate::cfg::*;
 }
 pub mod ion {
     pub use crate::ion::*;
+}
+pub mod fastalloc {
+    pub use crate::fastalloc::*;
 }
 pub mod checker {
     pub use crate::checker::*;

@@ -1,0 +1,12 @@
+# E021-04: CHARACTER_LENGTH function
+
+query I
+SELECT CHARACTER_LENGTH ( 'foo' )
+----
+3
+
+
+query I
+SELECT CHAR_LENGTH ( 'foo' )
+----
+3

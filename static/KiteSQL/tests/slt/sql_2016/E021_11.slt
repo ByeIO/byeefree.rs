@@ -1,0 +1,13 @@
+# E021-11: POSITION function
+
+query I
+SELECT POSITION ( 'foo' IN 'bar' )
+----
+0
+
+# query I
+# SELECT POSITION ( 'foo' IN 'bar' USING CHARACTERS )
+
+
+# query I
+# SELECT POSITION ( 'foo' IN 'bar' USING OCTETS )
