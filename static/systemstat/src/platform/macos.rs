@@ -1,3 +1,5 @@
+#![allow(deprecated)]
+
 use std::{io, ptr, mem::{self, MaybeUninit}, ffi, slice};
 use libc::{
     c_int, c_void, host_statistics64, mach_host_self, size_t, statfs, sysconf, sysctl,

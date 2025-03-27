@@ -1,0 +1,15 @@
+[Unit]
+Description=ByeIO "Byeefree System" Service
+After=network-online.target
+
+[Service]
+ExecStart=/usr/local/bin/byeefree
+User=_Byeefree_
+Group=_ByeIO_
+WorkingDirectory=/tmp
+Restart=always
+RestartSec=3
+Environment=""
+
+[Install]
+WantedBy=multi-user.target

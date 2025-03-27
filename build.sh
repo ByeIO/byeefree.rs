@@ -38,3 +38,7 @@ cargo-zigbuild run --release --example wasmtime_yosys > result/wasmtime_yosys.lo
 cargo-zigbuild run --release --example wasmtime_cli_wrapper
 cargo-zigbuild run --release --example wasmtime_ubuntu
 cargo-zigbuild run --release --example sysinfo_cpu_mem
+cargo-zigbuild run --release --example clap_example_derive
+cargo-zigbuild run --release --example clap_byeefree
+# 正式文件
+cargo-zigbuild run --release --bin byeefree

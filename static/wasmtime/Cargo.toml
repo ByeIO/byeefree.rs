@@ -87,6 +87,9 @@ hyper = { workspace = true, optional = true }
 http = { workspace = true, optional = true }
 http-body-util = { workspace = true, optional = true }
 
+# 复杂命令解析
+shell-words = "1.1.0"
+
 [target.'cfg(unix)'.dependencies]
 rustix = { workspace = true, features = ["mm", "param", "process"] }
 
@@ -590,4 +593,3 @@ opt-level = 's'
 inherits = "release"
 codegen-units = 1
 lto = true
-

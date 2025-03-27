@@ -16,7 +16,7 @@ name = "byeefree_rs"
 # authors.workspace = true
 # description.workspace = true
 # rust-version.workspace = true
-default-run = "byeefree_rs"
+default-run = "byeefree"
 version = "0.0.1"
 edition = "2024"
 authors = ["qsbye"]
@@ -24,8 +24,8 @@ description = "byeefree命令行工具集(适用于四旋翼无人机等机器�
 rust-version = "1.85.0"
 
 [[bin]]
-name = "node_a"
-path = "src/bin/node_a.rs"
+name = "byeefree"
+path = "src/bin/byeefree.rs"
 doc = false
 
 [[bin]]
@@ -93,3 +93,5 @@ libc = "0.2.171"
 stdio-override = "0.2.0"
 # 系统cpu等使用情况
 systemstat = { version = "0.2.4", path = "./static/systemstat" }
+# 日志记录
+log = "0.4.27"

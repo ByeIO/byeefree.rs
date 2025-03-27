@@ -2,10 +2,45 @@
 - 支持一键安装及运行, 无需互联网连接.
 提供`byeefree`命令, 可以一键启动无人机任务.
 
+## 使用说明
+### byeefree命令行
+```sh
+byeefree -h
+byeefree -v
+# 机器人框架
+byeefree rosette -h
+# 可视化界面
+byeefree rosette webviz
+# mosh远程连接工具
+byeefree mosh
+# rsync文件同步工具
+byeefree rsync
+# 安装/卸载服务
+byeefree util service install
+byeefree util service uninstall
+byeefree util service status
+byeefree util service restart
+# 使用ubuntu运行某些难以编译为wasm的程序
+byeefree ubuntu -c "uname -r"
+# 登录账户(使用sm4-key)
+byeefree account login "qsbye"
+# 注册帐户: 自动生成私钥并保存到/tmp/_ByeIO_目录
+byeefree account register "qsbye"
+# 查看日志
+byeefree log
+# 查看系统cpu及内存占用率
+byeefree util sysinfo
+# 打印usb设备(类似adb device)
+byeefree util device
+# 设置本机的角色
+byeefree util role air # 空中 
+byeefree util role ground # 地面站 
+```
+
 ## 虚拟网卡
 将esp32点对点透传的数据封装为udp/tcp并通过linux TAP虚拟网卡模拟为网卡, 然后就可以使用:
 ```sh
-ssh qsbye@[ip地址]
+byeefree mosh qsbye@[ip地址]
 ```
 来连接开发板了.
 
@@ -13,14 +48,40 @@ ssh qsbye@[ip地址]
 使用nightly通道的1.85以上版本rustc编译.
 
 ### 项目目录
-
+```sh
+- .cargo文件夹 : 编译器配置
+- assets文件夹 : 资源文件
+- docs文件夹 : 文档
+- examples文件夹 : 例程
+- files文件夹 : 资源文件
+- result文件夹 : 代码运行输出
+- src文件夹 : 主要代码
+- static文件夹 : 魔改的第三方库
+- target文件夹 : 编译结果
+- vendor文件夹 : 所有的第三方库
+- `问题记录`文件夹 : 问题问答
+* build.rs : 编译前处理
+* build.sh : 编译命令
+* Cargo.toml : 项目配置
+* clippy.toml : 代码风格设定
+* LICENSE : 代码开源许可
+* README.md : 说明书
+* rust-toolchain.toml : 编译器配置
+```
 
 ### 代码目录说明
-
+```sh
+- bin
+    * byeefree.rs : byeefree-cli命令行工具
+    * installer.rs : 服务安装程序
+    * node_a.rs : A节点专用代码
+    * node_b.rs : B节点专用代码
+* main.rs : (占位)
+```
 
 ### 例程说明
 **文件夹: examples/**
-```yaml
+```sh
 - clap_byeefree.rs : 命令行程序
 - create_user_group.rs : 创建系统用户和用户组
 - database_login.rs : 数据库+登录用户账户
