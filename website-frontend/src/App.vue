@@ -4,9 +4,9 @@ import HelloWorld from "./components/HelloWorld.vue";
 
 <template>
   <img
-    alt="红苹果"
+    alt="fft"
     class="logo"
-    src="./assets/apple1.png"
+    src="./assets/fft.png"
     width="125"
     height="125"
   />

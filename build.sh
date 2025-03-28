@@ -80,3 +80,6 @@ sudo ./installer
 # 手动上传
 rsync -avz --partial --progress /Users/workspace/Desktop/projects/ByeIO/software/exp226-rust-byeefree/target/aarch64-unknown-linux-gnu/release/byeefree qsbye@192.168.30.33:/usr/local/bin
 chmod +x /usr/local/bin/byeefree
+# 打包网页前端
+bun run build
+./tools/web-static-pack-packer directory-single ./website-frontend/dist ./assets/frontend.pack

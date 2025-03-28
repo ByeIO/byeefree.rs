@@ -12,10 +12,12 @@
     <meta http-equiv="Cache" content="no-cache" />
     <!-- end 禁用浏览器缓存, 防止页面不更新 -->
 
-    <title>便携式光声融合苹果霉心病分析系统</title>
-    <link rel="stylesheet" href="./static/mdui2/mdui.css" />
+    <title>byeefree无人机任务前端界面</title>
     <style>
       /* 优化布局样式 */
+      *{
+          background-color: #2f2f2f;
+      }
       .custom-col {
         width: 48%;
         margin: 1%;
@@ -58,8 +60,8 @@
         width: 100%; /* 占满父容器 */
       }
     </style>
-    <script type="module" crossorigin src="/assets/index-B2-uMJvR.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-DwNQaLtR.css">
+    <script type="module" crossorigin src="/assets/index-CvUoDFkQ.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BO3akxf_.css">
   </head>
   <body>
 
@@ -68,9 +70,9 @@
       <!-- start 顶部导航栏 -->
 
       <mdui-top-app-bar style="position: relative">
-        <mdui-button-icon icon="🍎"></mdui-button-icon>
+        <mdui-button-icon icon="🚁"></mdui-button-icon>
         <mdui-top-app-bar-title
-          >便携式光声融合苹果霉心病分析系统</mdui-top-app-bar-title
+          >「byeefree无人机指挥系统」任务前端界面</mdui-top-app-bar-title
         >
         <div style="flex-grow: 1"></div>
         <!-- 添加信号采集按钮 -->
@@ -79,14 +81,14 @@
           id="btnGotoPageOne"
           icon="📈"
           onclick="switchPage('pageOne', this)"
-          >信号采集</mdui-button
+          >点云信息</mdui-button
         >
         <!-- 添加霉心病模型预测按钮 -->
         <mdui-button
           id="btnGotoPageTwo"
           icon="🧐"
           onclick="switchPage('pageTwo', this)"
-          >霉心病模型预测</mdui-button
+          >机载电脑输出</mdui-button
         >
         <!-- 添加深度求索(思考大模型)按钮 -->
         <mdui-button
@@ -112,7 +114,7 @@
         <div class="mdui-row" style="height: 40vh">
           <!-- 苹果图片显示区域 -->
           <div class="custom-col">
-            <h4>苹果图片显示</h4>
+            <h4>机载摄像头#1画面</h4>
             <div
               id="appleImageContainer"
               style="
@@ -125,8 +127,8 @@
             >
               <img
                 id="appleImage"
-                src="/assets/apple2-D-82z9TZ.png"
-                alt="苹果图片"
+                src="/assets/planning-DP1wuveK.png"
+                alt="摄像头#1"
                 style="max-width: 100%; max-height: 100%"
               />
             </div>
