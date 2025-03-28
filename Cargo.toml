@@ -34,6 +34,16 @@ name = "installer"
 path = "src/bin/installer.rs"
 doc = false
 
+[[example]]
+name = "database_login"
+path = "examples/database_login"
+features = ["kitesql"]
+
+[[example]]
+name = "database_sql"
+path = "examples/database_sql"
+features = ["kitesql"]
+
 [dependencies]
 # base64编码
 base64 = "0.22.1"
@@ -81,7 +91,7 @@ hex = "0.4.3"
 # 临时文件
 tempfile = "3.19.1"
 # 数据库(SQL型)
-kite_sql = "0.1.1"
+kite_sql = { version = "0.1.1", path = "./static/KiteSQL", optional = true }
 # 唯一识别码
 uuid = { version = "1.16.0", features = ["v4"] }
 # 复杂命令解析
@@ -98,8 +108,18 @@ systemstat = { version = "0.2.4", path = "./static/systemstat" }
 log = "0.4.27"
 # 时间格式化输出
 chrono = "0.4.40"
+# 嵌入文件夹
+rust-embed = "8.6.0"
+# sqlite3数据库(纯rust)
+prsqlite = { version = "0.1.0", path = "./static/prsqlite" }
+# kv值存储
+redb = { version = "2.4.0", path = "./static/redb" }
 
 # build.rs依赖
 [build-dependencies]
 # 时间格式化输出
 chrono = "0.4.40"
+
+# 配置条件编译
+[features]
+kitesql = ["kite_sql"]

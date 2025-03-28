@@ -594,6 +594,9 @@ dependencies = [
  "log",
  "moshudp",
  "nusb",
+ "prsqlite",
+ "redb",
+ "rust-embed",
  "shell-words",
  "sm4-gcm",
  "sm9",
@@ -2723,8 +2726,6 @@ dependencies = [
 [[package]]
 name = "kite_sql"
 version = "0.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "93be45ac8ec678d0a3fd0b4fff1777e09c9156d98c4d031825d8ea11376f29e0"
 dependencies = [
  "ahash 0.8.11",
  "bincode",
@@ -2755,8 +2756,6 @@ dependencies = [
 [[package]]
 name = "kite_sql_serde_macros"
 version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "53977a97b0a43eb8e2f305fdc7551df2a5fe92625731e12ad9a77c33c90ea350"
 dependencies = [
  "darling",
  "proc-macro2",
@@ -3548,6 +3547,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "prsqlite"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+]
+
+[[package]]
 name = "psm"
 version = "0.1.25"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3686,6 +3692,13 @@ checksum = "1465873a3dfdaa8ae7cb14b4383657caab0b3e8a0aa9ae8e04b044854c8dfce2"
 dependencies = [
  "crossbeam-deque",
  "crossbeam-utils",
+]
+
+[[package]]
+name = "redb"
+version = "2.4.0"
+dependencies = [
+ "libc",
 ]
 
 [[package]]
@@ -3882,6 +3895,40 @@ dependencies = [
  "thiserror 1.0.69",
  "tokio",
  "tokio-rustls 0.24.1",
+]
+
+[[package]]
+name = "rust-embed"
+version = "8.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0b3aba5104622db5c9fc61098de54708feb732e7763d7faa2fa625899f00bf6f"
+dependencies = [
+ "rust-embed-impl",
+ "rust-embed-utils",
+ "walkdir",
+]
+
+[[package]]
+name = "rust-embed-impl"
+version = "8.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1f198c73be048d2c5aa8e12f7960ad08443e56fd39cc26336719fdb4ea0ebaae"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "rust-embed-utils",
+ "syn 2.0.100",
+ "walkdir",
+]
+
+[[package]]
+name = "rust-embed-utils"
+version = "8.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5a2fcdc9f40c8dc2922842ca9add611ad19f332227fc651d015881ad1552bd9a"
+dependencies = [
+ "sha2",
+ "walkdir",
 ]
 
 [[package]]

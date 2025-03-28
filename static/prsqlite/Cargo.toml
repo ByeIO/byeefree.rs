@@ -1,0 +1,32 @@
+[package]
+name = "prsqlite"
+version = "0.1.0"
+edition = "2021"
+license-file = "LICENSE"
+description = "Pure Rust SQLite"
+homepage = "https://github.com/kawasin73/prsqlite"
+repository = "https://github.com/kawasin73/prsqlite"
+keywords = ["sqlite", "sqlite3"]
+categories = ["database"]
+include = [
+    "**/*.rs",
+    "Cargo.toml",
+]
+
+[lib]
+name = "prsqlite"
+path = "src/lib.rs"
+
+[[bin]]
+name = "prsqlite"
+path = "src/main.rs"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1"
+
+[dev-dependencies]
+rand = "*"
+rusqlite = "0.28.0"
+tempfile = "3"

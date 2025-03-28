@@ -38,7 +38,7 @@ pub enum Commands {
     /// 实用工具
     Util {
         #[command(subcommand)]
-        command: UtilCommands,
+        command: Option<UtilCommands>,
     },
     
     /// 机器人框架
@@ -94,7 +94,7 @@ pub enum UtilCommands {
     /// 后台服务管理
     Service{
         #[command(subcommand)]
-        action: ServiceCommands,
+        action: Option<ServiceCommands>,
     },
     /// 系统使用情况
     Sysinfo,

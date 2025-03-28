@@ -11,6 +11,7 @@ use super::{
     UbuntuCommands, UtilCommands, ServiceCommands, 
 };
 use super::ubuntu::ubuntu_command;
+use super::sysinfo::util_sysinfo_cmd;
 
 /// 命令解析器入口
 pub fn command_parser(){
@@ -39,7 +40,93 @@ pub fn command_parser(){
                 }// end match
             }// end if
         },
+        
+        // 处理账户命令
+        Some(Commands::Account { command } ) => {
+            // 处理子命令
+            if let Some(cmd) = command {
+                match cmd {
+                    AccountCommands::Login { name } => {
+                        if let Some(n) = name {
+                            println!("登录{}账户成功!", n);
+                        }// end if let
+                    },
+                    AccountCommands::Register { name } => {
+                        if let Some(n) = name {
+                            println!("注册{}账户成功!", n);
+                        } // end if let
+                    },
+                } // end match
+            } // end if let
+        },
+        
+        // 处理实用工具命令
+        Some(Commands::Util { command } ) => {
+            // 处理子命令
+            if let Some(cmd) = command {
+                match cmd {
+                    // 系统资源情况
+                    UtilCommands::Sysinfo => {
+                        util_sysinfo_cmd();
+                    },
+                    // 设备管理
+                    UtilCommands::Device => {
+                        println!("设备管理");
+                    },
+                    // 角色设置
+                    UtilCommands::Role { role } => {
+                        println!("设置{}角色成功", role);
+                    }
+                    // 服务管理
+                    UtilCommands::Service { action } => {
+                        if let Some(act) = action {
+                            match act {
+                                // 安装后台服务
+                                ServiceCommands::Install => {
+                                    println!("安装后台服务");
+                                },
+                                // 卸载后台服务
+                                ServiceCommands::Uninstall => {
+                                    println!("卸载后台服务");
+                                }, 
+                                // 查看服务状态
+                                ServiceCommands::Status => {
+                                    println!("查看服务状态");
+                                },
+                                // 重启服务
+                                ServiceCommands::Restart => {
+                                    println!("重启服务");
+                                },
+                            } // end match
+                        }// end if let
+                    },
+                } // end match
+            }// end if let
+        },
+        
+        // 处理查看日志命令
+        Some(Commands::Log) => {
+            println!("查看日志!");
+        },
+        
+        // 处理机器人框架命令
+        Some(Commands::Rosette) => {
+            println!("机器人框架命令");
+        },
+        
+        // 处理mosh远程连接命令
+        Some(Commands::Mosh) => {
+            println!("远程连接!");
+        },
+        
+        //  处理rsync同步文件命令
+        Some(Commands::Rsync) => {
+            println!("文件同步!");
+        },
+        
         // 其他子命令的处理...
-        _ => {}
+        _ => {
+            println!("其他命令正在完善中...")
+        },
     }// end match
 }// end fn

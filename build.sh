@@ -48,3 +48,19 @@ cargo-zigbuild run --bin byeefree ubuntu -c "touch /home/hello_ubuntu"
 cargo-zigbuild run --bin byeefree ubuntu -c "uname -a"
 RUST_BACKTRACE=1 cargo test
 git rev-parse --short HEAD
+cargo-zigbuild build --release --bin byeefree --target aarch64-unknown-linux-gnu.2.17
+# cp /Users/workspace/.rustup/toolchains/nightly-aarch64-apple-darwin/lib/rustlib/aarch64-unknown-linux-gnu/lib/liblibgcc_s.so
+cargo-zigbuild build --release --bin byeefree --target aarch64-unknown-linux-musl
+ssh qsbye@192.168.30.171
+rsync -avz --partial --progress /Users/workspace/Desktop/projects/ByeIO/software/exp226-rust-byeefree qsbye@192.168.30.171:/home/qsbye/byeefree
+cargo build --release --bin byeefree --target aarch64-unknown-linux-gnu
+cargo run --release --bin byeefree --target aarch64-unknown-linux-gnu ubuntu -c "uname -a"
+rsync -avz --partial --progress qsbye@192.168.30.171:/home/qsbye/byeefree/exp226-rust-byeefree/target/aarch64-unknown-linux-gnu/release/byeefree /Users/workspace/Desktop/projects/ByeIO/software/exp226-rust-byeefree/target/byeefree.linux.aarch64
+rsync -avz --partial --progress /Users/workspace/Desktop/projects/ByeIO/software/exp226-rust-byeefree/target/byeefree.linux.aarch64 qsbye@192.168.30.33:/home/qsbye
+# 继续编译
+cargo-zigbuild run --bin byeefree
+cargo-zigbuild run --release --example redb_kv
+cargo-zigbuild run --release --example sqlite3_sql
+RUST_LOG=TRACE cargo-zigbuild run --bin byeefree account login "qsbye"
+RUST_LOG=TRACE cargo-zigbuild run --release --example print_log
+RUST_LOG=TRACE cargo-zigbuild run --bin byeefree util sysinfo

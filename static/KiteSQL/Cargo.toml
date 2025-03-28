@@ -48,6 +48,7 @@ paste                 = { version = "1" }
 parking_lot           = { version = "0.12", features = ["arc_lock"] }
 petgraph              = { version = "0.6" }
 regex                 = { version = "1" }
+# 这个依赖交叉编译不兼容
 rocksdb               = { version = "0.22" }
 rust_decimal          = { version = "1" }
 serde                 = { version = "1", features = ["derive", "rc"] }
