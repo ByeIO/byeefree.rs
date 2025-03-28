@@ -116,6 +116,10 @@ prsqlite = { version = "0.1.0", path = "./static/prsqlite" }
 redb = { version = "2.4.0", path = "./static/redb" }
 # log库和tracing库共存工具
 tracing-log = "0.2.0"
+# 网页服务器
+simple-http-server = "0.6.11"
+# 打包整个网页为pack文件
+web-static-pack = "0.4.4"
 
 # build.rs依赖
 [build-dependencies]

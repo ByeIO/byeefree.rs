@@ -1,5 +1,6 @@
-use std::cmp;
-use std::collections::VecDeque;
+use alloc::collections::VecDeque;
+use alloc::vec::Vec;
+use core::cmp;
 use std::io;
 use std::io::Read;
 
@@ -121,8 +122,8 @@ impl ChunkVecBuffer {
     fn consume(&mut self, mut used: usize) {
         while let Some(mut buf) = self.chunks.pop_front() {
             if used < buf.len() {
-                self.chunks
-                    .push_front(buf.split_off(used));
+                buf.drain(..used);
+                self.chunks.push_front(buf);
                 break;
             } else {
                 used -= buf.len();
@@ -148,7 +149,7 @@ impl ChunkVecBuffer {
 }
 
 #[cfg(test)]
-mod test {
+mod tests {
     use super::ChunkVecBuffer;
 
     #[test]

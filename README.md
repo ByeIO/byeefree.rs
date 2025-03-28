@@ -10,13 +10,17 @@
 rustup toolchain add nightly
 cargo install cargo-zigbuild
 rustup target add aarch64-unknown-linux-gnu
+rustup target add aarch64-apple-darwin
+# 第一步: 编译主程序
 cargo-zigbuild build --release --bin byeefree --target aarch64-unknown-linux-gnu
+cargo-zigbuild build --release --bin byeefree --target aarch64-apple-darwin
+# 第二步: 编译安装器
 cargo-zigbuild build --release --bin installer --target aarch64-unknown-linux-gnu
-# 上传文件
+# 第三步: 上传文件
 rsync -avz --partial --progress /Users/workspace/Desktop/projects/ByeIO/software/exp226-rust-byeefree/target/aarch64-unknown-linux-gnu/release/installer qsbye@192.168.30.33:/home/qsbye
 chmod +x installer
 sudo ./installer
-# 测试
+# 第四步: 测试
 byeefree -h
 ```
 
@@ -37,6 +41,7 @@ byeefree util service install
 byeefree util service uninstall
 byeefree util service status
 byeefree util service restart
+byeefree util service run
 # 使用ubuntu运行某些难以编译为wasm的程序
 byeefree ubuntu -c "uname -r"
 # 登录账户(使用sm4-key)
@@ -54,12 +59,8 @@ byeefree util role air # 空中
 byeefree util role ground # 地面站 
 ```
 
-## 虚拟网卡
-将esp32点对点透传的数据封装为udp/tcp并通过linux TAP虚拟网卡模拟为网卡, 然后就可以使用:
-```sh
-byeefree mosh qsbye@[ip地址]
-```
-来连接开发板了.
+### 虚拟网卡
+将esp32点对点透传的数据封装为udp/tcp并通过linux TAP虚拟网卡模拟为网卡, 然后就可以使用:`byeefree mosh qsbye@[ip地址]`来连接机载计算机了.
 
 ## 开发说明
 使用nightly通道的1.85以上版本rustc编译.
@@ -93,7 +94,7 @@ byeefree mosh qsbye@[ip地址]
     * installer.rs : 服务安装程序
     * node_a.rs : A节点专用代码
     * node_b.rs : B节点专用代码
-* main.rs : (占位)
+- byeefree_cli : 
 ```
 
 ### 例程说明

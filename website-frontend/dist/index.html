@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- start 禁用浏览器缓存, 防止页面不更新 -->
+    <meta http-equiv="Expires" content="0" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-control" content="no-cache" />
+    <meta http-equiv="Cache" content="no-cache" />
+    <!-- end 禁用浏览器缓存, 防止页面不更新 -->
+
+    <title>便携式光声融合苹果霉心病分析系统</title>
+    <link rel="stylesheet" href="./static/mdui2/mdui.css" />
+    <style>
+      /* 优化布局样式 */
+      .custom-col {
+        width: 48%;
+        margin: 1%;
+        float: left;
+        height: calc(50vh - 100px); /* 根据屏幕高度自适应 */
+      }
+      .mdui-container {
+        max-width: 1600px;
+        margin: 0 auto;
+        height: 100vh; /* 容器高度占满整个屏幕 */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .mdui-row {
+        clear: both;
+        margin-bottom: 20px;
+        flex: 1; /* 行高度自适应 */
+        display: flex;
+        align-items: stretch;
+      }
+      .mdui-table {
+        width: 100%;
+      }
+      canvas {
+        background: #f5f5f5;
+        border-radius: 4px;
+        height: 100%; /* 画布高度占满父容器 */
+      }
+      #appleImageContainer {
+        height: 100%; /* 图片容器高度占满父容器 */
+      }
+      /* 导航栏按钮高亮样式，修改为西瓜红 */
+      .active {
+        color: #ff3b5c;
+      }
+      /* 帧框尺寸设定 */
+      iframe {
+        height: 85vh; /* 占满父容器 */
+        width: 100%; /* 占满父容器 */
+      }
+    </style>
+    <script type="module" crossorigin src="/assets/index-B2-uMJvR.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DwNQaLtR.css">
+  </head>
+  <body>
+
+    <!-- start mdui容器 -->
+    <div class="mdui-container" id="metaContainer">
+      <!-- start 顶部导航栏 -->
+
+      <mdui-top-app-bar style="position: relative">
+        <mdui-button-icon icon="🍎"></mdui-button-icon>
+        <mdui-top-app-bar-title
+          >便携式光声融合苹果霉心病分析系统</mdui-top-app-bar-title
+        >
+        <div style="flex-grow: 1"></div>
+        <!-- 添加信号采集按钮 -->
+        <mdui-button
+          class="active"
+          id="btnGotoPageOne"
+          icon="📈"
+          onclick="switchPage('pageOne', this)"
+          >信号采集</mdui-button
+        >
+        <!-- 添加霉心病模型预测按钮 -->
+        <mdui-button
+          id="btnGotoPageTwo"
+          icon="🧐"
+          onclick="switchPage('pageTwo', this)"
+          >霉心病模型预测</mdui-button
+        >
+        <!-- 添加深度求索(思考大模型)按钮 -->
+        <mdui-button
+          id="btnGotoPageThree"
+          icon="🤖"
+          onclick="switchPage('pageThree', this)"
+          >深度求索</mdui-button
+        >
+        <!-- 添加数据处理工具按钮 -->
+        <mdui-button
+          id="btnGotoPageFour"
+          icon="🧰"
+          onclick="switchPage('pageFour', this)"
+          >工具箱</mdui-button
+        >
+        <mdui-button-icon icon="🍐"></mdui-button-icon>
+      </mdui-top-app-bar>
+      <!-- end 顶部导航栏 -->
+
+      <!--start 第一页 -->
+      <div class="mdui-container" id="pageOne">
+        <!-- 四个区域布局 -->
+        <div class="mdui-row" style="height: 40vh">
+          <!-- 苹果图片显示区域 -->
+          <div class="custom-col">
+            <h4>苹果图片显示</h4>
+            <div
+              id="appleImageContainer"
+              style="
+                width: 100%;
+                border: 1px solid #ccc;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+            >
+              <img
+                id="appleImage"
+                src="/assets/apple2-D-82z9TZ.png"
+                alt="苹果图片"
+                style="max-width: 100%; max-height: 100%"
+              />
+            </div>
+          </div>
+          <!-- 数据表格展示及操作按钮区域 -->
+          <div class="custom-col">
+            <div class="mdui-row">
+              <h4>数据表格展示及操作按钮</h4>
+              <mdui-button id="btnAcoustic VibrationSignal"
+                >采集声振信号</mdui-button
+              >
+              <mdui-button id="btnSpectral Signal">采集光谱信号</mdui-button>
+            </div>
+
+            <!-- start 数据表格 -->
+            <div style="height: 30vh; overflow-y: auto">
+              <table class="mdui-table mdui-table-striped">
+                <thead>
+                  <tr>
+                    <th>Wavelength_nm_</th>
+                    <th>strength</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>320.4690</td>
+                    <td>5.9652e+03</td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>323.1660</td>
+                    <td>5.8518e+03</td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>325.8610</td>
+                    <td>6031</td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>328.5530</td>
+                    <td>5.8108e+03</td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>331.2430</td>
+                    <td>5.9518e+03</td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>333.9300</td>
+                    <td>5.9542e+03</td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>336.6150</td>
+                    <td>5.7978e+03</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!--end 数据表格 -->
+          </div>
+        </div>
+        <div class="mdui-row">
+          <!-- 声振信号显示区域 -->
+          <div class="custom-col">
+            <h4>声振信号显示</h4>
+            <canvas
+              id="vibrationChart"
+              style="width: 100%; height: 100%"
+            ></canvas>
+          </div>
+          <!-- 光谱信号显示区域 -->
+          <div class="custom-col">
+            <h4>光谱信号显示</h4>
+            <canvas
+              id="spectrumChart"
+              style="width: 100%; height: 100%"
+            ></canvas>
+          </div>
+        </div>
+      </div>
+      <!--end 第一页 -->
+
+      <!-- start 第二页 -->
+      <div class="mdui-container mdui-row" id="pageTwo" style="display: none">
+        <!-- start 图片及信息展示区 -->
+        <div class="mdui-col-md-6">
+          <!-- 待测图片区域 -->
+          <div class="mdui-col-md-12">
+            <h4 class="mdui-text-color-black">待测图片</h4>
+            <div class="mdui-card">
+              <div class="mdui-card-media">
+                <img
+                  id="testImage"
+                  src="./dataset/hht/test/healthy/hht_rec_IMF1_healthy_1.jpg"
+                  alt="待测图片"
+                  style="width: 100%"
+                />
+              </div>
+            </div>
+            <!-- 文本框显示图片路径 -->
+            <div class="mdui-textfield">
+              <input
+                class="mdui-textfield-input"
+                type="text"
+                value="./dataset/hht/test/healthy/hht_rec_IMF1_healthy_1.jpg"
+                readonly
+              />
+            </div>
+          </div>
+          <!-- 检测结果区域 -->
+          <div class="mdui-col-md-12">
+            <h4 class="mdui-text-color-black">检测结果</h4>
+            <div class="mdui-card">
+              <div class="mdui-card-content">
+                <div id="resultText" style="mdui-text-color-black">
+                  暂无结果.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- end 图片及信息展示区 -->
+
+        <!-- start 操作按钮及日志显示区 -->
+        <div class="mdui-col-md-6">
+          <h4 class="mdui-text-color-black">操作按钮及日志显示区</h4>
+          <div class="mdui-col-md-12 mdui-text-center">
+            <!-- 打开图片按钮 -->
+            <button
+              class="mdui-btn mdui-color-theme-accent mdui-ripple"
+              id="openImageBtn"
+            >
+              打开图片
+            </button>
+            <!-- 信号处理方法选择 -->
+            <div class="mdui-card">
+              <div class="mdui-card-content">
+                <p class="mdui-text-color-black">信号处理方法</p>
+                <div class="mdui-radio-group" mdui-radio-group>
+                  <label class="mdui-radio">
+                    <input
+                      type="radio"
+                      name="signalProcessingMethod"
+                      value="hht"
+                      checked
+                    />
+                    <i class="mdui-radio-icon"></i>
+                    HHT
+                  </label>
+                  <label class="mdui-radio">
+                    <input
+                      type="radio"
+                      name="signalProcessingMethod"
+                      value="wvd"
+                    />
+                    <i class="mdui-radio-icon"></i>
+                    WVD
+                  </label>
+                  <label class="mdui-radio">
+                    <input
+                      type="radio"
+                      name="signalProcessingMethod"
+                      value="wavelet"
+                    />
+                    <i class="mdui-radio-icon"></i>
+                    小波变换
+                  </label>
+                </div>
+              </div>
+            </div>
+            <!-- 检测按钮 -->
+            <button
+              class="mdui-btn mdui-color-theme-accent mdui-ripple"
+              id="detectBtn"
+            >
+              检测
+            </button>
+            <!-- 日志显示文本框 -->
+            <div class="mdui-textfield" style="height: 50vh; overflow-y: auto">
+              <textarea
+                class="mdui-textfield-input mdui-text-color-black"
+                id="logTextarea"
+                rows="5"
+                readonly
+              >
+🍎
+</textarea
+              >
+            </div>
+          </div>
+        </div>
+        <!-- end 操作按钮及日志显示区 -->
+      </div>
+      <!-- end 第二页 -->
+
+      <!-- start 第三页 -->
+      <div class="mdui-container" id="pageThree" style="display: none">
+        <div class="mdui-chip">
+          <img class="mdui-chip-icon" src="/assets/avatar-CjaYnwG9.png" />
+          <span class="mdui-chip-title"
+            >我是你的人工智能助理,
+            有关苹果霉心病的问题都可以向我提问😊。请先点击加载模型按钮,
+            然后耐心等待几分钟⏰解析模型。请放心👏, 所有计算都在本地进行。</span
+          >
+        </div>
+        <div class="mdui-col-md-12">
+          <!-- <script type="module" src="/src/deepseek-r1-webgpu/src/main.jsx"></script> -->
+          <iframe
+            src="/static/chatbot/index.html"
+            class="mdui-col-md-12 mdui-row-md-12"
+            ><text>...</text>
+          </iframe>
+        </div>
+      </div>
+      <!-- end 第三页 -->
+
+      <!-- start 第四页 -->
+      <div class="mdui-container" id="pageFour" style="display: none">
+        <div class="mdui-chip">
+          <img class="mdui-chip-icon" src="/assets/cat-CHA2fHqH.png" />
+          <span class="mdui-chip-title"
+            >数据处理工具箱:
+            🎉在浏览器进行本地数据处理。内置Python🐍运行环境和一些数据📊处理工具。预热wasm环境需要等待几分钟。</span
+          >
+        </div>
+        <div class="mdui-col-md-12">
+          <iframe
+            src="/static/jupyterlite/index.html"
+            class="mdui-col-md-12 mdui-row-md-12"
+            ><text>...</text>
+          </iframe>
+        </div>
+      </div>
+      <!-- end 第四页 -->
+    </div>
+    <!-- end mdui容器 -->
+
+    <script>
+      /// 页面公共脚本
+      // 切换页面及按钮高亮的函数
+      function switchPage(pageId, btn) {
+        // 隐藏所有页面
+        document.getElementById("pageOne").style.display = "none";
+        document.getElementById("pageTwo").style.display = "none";
+        document.getElementById("pageThree").style.display = "none";
+        document.getElementById("pageFour").style.display = "none";
+        // 移除所有按钮的高亮类
+        document.getElementById("btnGotoPageOne").classList.remove("active");
+        document.getElementById("btnGotoPageTwo").classList.remove("active");
+        document.getElementById("btnGotoPageThree").classList.remove("active");
+        document.getElementById("btnGotoPageFour").classList.remove("active");
+        // 显示目标页面
+        document.getElementById(pageId).style.display = "block";
+        // 添加点击按钮的高亮类
+        btn.classList.add("active");
+      }
+    </script>
+    <script>
+      /// 第一页的脚本
+      // 确保 Chart.js 已加载
+      if (typeof Chart !== "undefined") {
+        // 初始化声振信号图表
+        let vibrationChart = new Chart(
+          document.getElementById("vibrationChart"),
+          {
+            type: "line",
+            data: {
+              labels: [0, 0.04, 0.08, 0.12, 0.16],
+              datasets: [
+                {
+                  label: "声振信号",
+                  data: [0, 10, -10, 20, -20],
+                  borderColor: "rgba(75, 192, 192, 1)",
+                  fill: false,
+                },
+              ],
+            },
+            options: {
+              scales: {
+                y: {
+                  beginAtZero: true,
+                },
+              },
+            },
+          }
+        );
+
+        // 初始化光谱信号图表
+        let spectrumChart = new Chart(
+          document.getElementById("spectrumChart"),
+          {
+            type: "line",
+            data: {
+              labels: [300, 400, 500, 600, 700, 800, 900],
+              datasets: [
+                {
+                  label: "光谱信号",
+                  data: [14000, 12000, 10000, 8000, 6000, 4000, 3000],
+                  borderColor: "rgba(255, 99, 132, 1)",
+                  fill: false,
+                },
+              ],
+            },
+            options: {
+              scales: {
+                y: {
+                  beginAtZero: true,
+                },
+              },
+            },
+          }
+        );
+
+        // 模拟数据生成函数
+        function generateVibrationData() {
+          return Array.from({ length: 5 }, () =>
+            Math.floor(Math.random() * 40 - 20)
+          );
+        }
+
+        function generateSpectrumData() {
+          return Array.from({ length: 7 }, () =>
+            Math.floor(Math.random() * 10000 + 2000)
+          );
+        }
+
+        // 采集声振信号按钮点击事件
+        document
+          .getElementById("btnAcoustic VibrationSignal")
+          .addEventListener("click", () => {
+            // 弹出气泡提示
+            mdui.snackbar({
+              message: "采集声振信号中...",
+              position: "right - top",
+            });
+
+            // 模拟2秒延迟后更新数据
+            setTimeout(() => {
+              vibrationChart.data.datasets[0].data = generateVibrationData();
+              vibrationChart.update();
+              mdui.snackbar({
+                message: "声振信号采集完成！",
+                position: "right - top",
+              });
+            }, 2000);
+          });
+
+        // 采集光谱信号按钮点击事件
+        document
+          .getElementById("btnSpectral Signal")
+          .addEventListener("click", () => {
+            // 弹出气泡提示
+            mdui.snackbar({
+              message: "采集光谱信号中...",
+              position: "right - top",
+            });
+
+            // 模拟2秒延迟后更新数据
+            setTimeout(() => {
+              spectrumChart.data.datasets[0].data = generateSpectrumData();
+              spectrumChart.update();
+              mdui.snackbar({
+                message: "光谱信号采集完成！",
+                position: "right - top",
+              });
+            }, 2000);
+          });
+      } else {
+        console.error("Chart.js 未正确加载，请检查文件路径。");
+      }
+    </script>
+    <script>
+      /// 第二页的脚本
+
+      // 日志显示函数
+      function appendLog(message) {
+        const logText = document.getElementById("logTextarea");
+        const now = new Date();
+        const timestamp = now.toTimeString().split(" ")[0]; // 获取当前时间 HH:MM:SS
+        logText.value += `${timestamp} ${message}\n`;
+        logText.scrollTop = logText.scrollHeight; // 自动滚动到底部
+      }
+
+      // 初始化一条日志
+      appendLog("运行日志开始输出...");
+      appendLog("欢迎使用!");
+      // 打开图片按钮点击事件
+      document
+        .getElementById("openImageBtn")
+        .addEventListener("click", function () {
+          // 这里可以添加打开文件选择器的逻辑
+          mdui.snackbar({
+            message: "功能开发中！",
+            position: "top",
+          });
+        });
+
+      // 检测按钮点击事件
+      document
+        .getElementById("detectBtn")
+        .addEventListener("click", function () {
+          // 这里可以添加检测逻辑
+          mdui.snackbar({
+            message: "功能开发中！",
+            position: "top",
+          });
+        });
+    </script>
+  </body>
+</html>

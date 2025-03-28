@@ -6,9 +6,10 @@ use super::codec::Reader;
 use super::enums::AlertLevel;
 use super::message::{Message, OpaqueMessage, PlainMessage};
 
-use std::fs;
 use std::io::Read;
 use std::path::{Path, PathBuf};
+use std::prelude::v1::*;
+use std::{format, fs, println, vec};
 
 #[test]
 fn test_read_fuzz_corpus() {
@@ -48,7 +49,7 @@ fn test_read_fuzz_corpus() {
 }
 
 #[test]
-fn can_read_safari_client_hello_with_ip_address_in_sni_extension() {
+fn can_read_safari_client_hello() {
     let _ = env_logger::Builder::new()
         .filter(None, log::LevelFilter::Trace)
         .try_init();
@@ -72,7 +73,7 @@ fn can_read_safari_client_hello_with_ip_address_in_sni_extension() {
     let mut rd = Reader::init(bytes);
     let m = OpaqueMessage::read(&mut rd).unwrap();
     println!("m = {:?}", m);
-    Message::try_from(m.into_plain_message()).unwrap();
+    assert!(Message::try_from(m.into_plain_message()).is_err());
 }
 
 #[test]
