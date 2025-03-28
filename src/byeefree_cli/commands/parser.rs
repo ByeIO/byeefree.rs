@@ -97,6 +97,13 @@ pub fn command_parser(){
                                 ServiceCommands::Restart => {
                                     println!("重启服务");
                                 },
+                                // 运行服务(与start有区别)
+                                ServiceCommands::Run => {
+                                    println!("运行服务...");
+                                    use crate::backend::run_backend;
+                                    run_backend();
+                                },
+                                
                             } // end match
                         }// end if let
                     },

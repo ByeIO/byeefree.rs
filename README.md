@@ -3,6 +3,23 @@
 提供`byeefree`命令, 可以一键启动无人机任务.
 
 ## 使用说明
+### 编译&安装
+```sh
+# 安装编译工具
+# sudo apt install -y rustup
+rustup toolchain add nightly
+cargo install cargo-zigbuild
+rustup target add aarch64-unknown-linux-gnu
+cargo-zigbuild build --release --bin byeefree --target aarch64-unknown-linux-gnu
+cargo-zigbuild build --release --bin installer --target aarch64-unknown-linux-gnu
+# 上传文件
+rsync -avz --partial --progress /Users/workspace/Desktop/projects/ByeIO/software/exp226-rust-byeefree/target/aarch64-unknown-linux-gnu/release/installer qsbye@192.168.30.33:/home/qsbye
+chmod +x installer
+sudo ./installer
+# 测试
+byeefree -h
+```
+
 ### byeefree命令行
 ```sh
 byeefree -h

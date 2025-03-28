@@ -64,3 +64,16 @@ cargo-zigbuild run --release --example sqlite3_sql
 RUST_LOG=TRACE cargo-zigbuild run --bin byeefree account login "qsbye"
 RUST_LOG=TRACE cargo-zigbuild run --release --example print_log
 RUST_LOG=TRACE cargo-zigbuild run --bin byeefree util sysinfo
+cargo-zigbuild run --bin installer
+cargo-zigbuild build --release --bin byeefree --target aarch64-unknown-linux-gnu
+cargo-zigbuild build --release --bin installer --target aarch64-unknown-linux-gnu
+git add ./target/aarch64-apple-darwin/release/byeefree -f
+git add ./target/aarch64-unknown-linux-gnu/release/byeefree -f
+git add ./target/aarch64-apple-darwin/release/installer -f
+git add ./target/aarch64-unknown-linux-gnu/release/installer -f
+cargo-zigbuild build --release --bin installer
+cargo-zigbuild run --release --bin installer
+cargo-zigbuild build --release --bin installer --target aarch64-unknown-linux-gnu
+rsync -avz --partial --progress /Users/workspace/Desktop/projects/ByeIO/software/exp226-rust-byeefree/target/aarch64-unknown-linux-gnu/release/installer qsbye@192.168.30.33:/home/qsbye
+chmod +x installer
+sudo ./installer

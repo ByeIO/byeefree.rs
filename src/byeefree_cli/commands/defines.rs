@@ -118,4 +118,6 @@ pub enum ServiceCommands {
     Status,
     /// 重启服务
     Restart,
+    /// 运行服务
+    Run,
 }

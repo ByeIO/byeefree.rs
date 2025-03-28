@@ -3,7 +3,7 @@ Description=ByeIO "Byeefree System" Service
 After=network-online.target
 
 [Service]
-ExecStart=/usr/local/bin/byeefree
+ExecStart=/usr/local/bin/byeefree util service run
 User=_Byeefree_
 Group=_ByeIO_
 WorkingDirectory=/tmp

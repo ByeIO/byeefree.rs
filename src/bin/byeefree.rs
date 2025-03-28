@@ -27,8 +27,21 @@ fn main() {
     println!("欢迎使用ByeIO的byeefree命令行工具!");
     println!("软件版本: {}-{}", VERSION, GIT_HASH);
     println!("构建时间: {}", BUILD_TIMESTAMP);
+    
+    // 打印欢迎信息
+    print_welcome_info();
+    
     // 解析命令
     command_parser();
     
+    // 写入日志
     log::info!("初始化完成, 后台自动执行任务程序.");
+}
+
+fn print_welcome_info(){
+    println!("<<Byeefree--空中侦察四旋翼无人机指挥系统>>");
+    println!("检查程序完整性...");
+    println!("启动主程序...");
+    println!("加载后台服务...");
+    println!("浏览器访问[https://127.0.0.1:8888]打开系统界面 或者 VSCodium插件通过[wss://127.0.0.1:8888]访问系统.");
 }
