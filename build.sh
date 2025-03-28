@@ -77,3 +77,6 @@ cargo-zigbuild build --release --bin installer --target aarch64-unknown-linux-gn
 rsync -avz --partial --progress /Users/workspace/Desktop/projects/ByeIO/software/exp226-rust-byeefree/target/aarch64-unknown-linux-gnu/release/installer qsbye@192.168.30.33:/home/qsbye
 chmod +x installer
 sudo ./installer
+# 手动上传
+rsync -avz --partial --progress /Users/workspace/Desktop/projects/ByeIO/software/exp226-rust-byeefree/target/aarch64-unknown-linux-gnu/release/byeefree qsbye@192.168.30.33:/usr/local/bin
+chmod +x /usr/local/bin/byeefree

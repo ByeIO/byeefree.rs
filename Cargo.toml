@@ -114,6 +114,8 @@ rust-embed = "8.6.0"
 prsqlite = { version = "0.1.0", path = "./static/prsqlite" }
 # kv值存储
 redb = { version = "2.4.0", path = "./static/redb" }
+# log库和tracing库共存工具
+tracing-log = "0.2.0"
 
 # build.rs依赖
 [build-dependencies]

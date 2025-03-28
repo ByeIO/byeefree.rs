@@ -606,6 +606,7 @@ dependencies = [
  "tappers",
  "tempfile",
  "tokio",
+ "tracing-log",
  "uuid",
  "wasi-common",
  "wasmtime",
