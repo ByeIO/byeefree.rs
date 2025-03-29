@@ -16,3 +16,6 @@ pub use parser::command_parser;
 
 // 4. 系统资源信息
 pub mod sysinfo;
+
+// 5. 服务管理
+pub mod service;

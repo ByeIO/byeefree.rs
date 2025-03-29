@@ -14,7 +14,7 @@ use super::ubuntu::ubuntu_command;
 use super::sysinfo::util_sysinfo_cmd;
 
 /// 命令解析器入口
-pub fn command_parser(){
+pub async fn command_parser(){
     // 解析命令
     let args = super::ByeefreeCommand::parse();
     
@@ -83,25 +83,29 @@ pub fn command_parser(){
                             match act {
                                 // 安装后台服务
                                 ServiceCommands::Install => {
-                                    println!("安装后台服务");
+                                    use super::service::util_service_install_cmd;
+                                    let _ = util_service_install_cmd();
                                 },
                                 // 卸载后台服务
                                 ServiceCommands::Uninstall => {
-                                    println!("卸载后台服务");
+                                    use super::service::util_service_uninstall_cmd;
+                                    let _ = util_service_uninstall_cmd();
                                 }, 
                                 // 查看服务状态
                                 ServiceCommands::Status => {
-                                    println!("查看服务状态");
+                                    use super::service::util_service_status_cmd;
+                                    let _ = util_service_status_cmd();
                                 },
                                 // 重启服务
                                 ServiceCommands::Restart => {
-                                    println!("重启服务");
+                                    use super::service::util_service_restart_cmd;
+                                    let _ = util_service_restart_cmd();
                                 },
                                 // 运行服务(与start有区别)
                                 ServiceCommands::Run => {
                                     println!("运行服务...");
                                     use crate::backend::run_backend;
-                                    run_backend();
+                                    run_backend().await;
                                 },
                                 
                             } // end match

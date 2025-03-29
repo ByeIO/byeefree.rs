@@ -20,7 +20,8 @@ use std::env;
 // 日志库前端
 use env_logger::{Builder, Target};
 
-fn main() {
+#[tokio::main]
+async fn main() -> anyhow::Result<()> {
     // NOTE: wasmtime库初始化tracing, 不能重复初始化.
     
     // 初始化LogTracer以转发log记录
@@ -39,17 +40,20 @@ fn main() {
     // 打印欢迎信息
     print_welcome_info();
     
-    // 解析命令
-    command_parser();
+    // 解析命令(异步函数必须加await)
+    command_parser().await;
     
     // 写入日志
     log::info!("初始化完成, 后台自动执行任务程序.");
+    
+    // 返回
+    anyhow::Ok(())
 }
 
 fn print_welcome_info(){
-    println!("<<Byeefree--空中侦察四旋翼无人机指挥系统>>");
+    println!("<<byeefree柏飞--空中侦察四旋翼无人机指挥系统>>");
     println!("检查程序完整性...");
     println!("启动主程序...");
-    println!("加载后台服务...");
-    println!("浏览器访问[https://127.0.0.1:8888]打开系统界面 或者 VSCodium插件通过[wss://127.0.0.1:8888]访问系统.");
+    println!("检查后台服务...");
+    println!("浏览器访问[http://127.0.0.1:8888/index.html]打开系统界面 或者 VSCodium插件通过[wss://127.0.0.1:8888]访问系统.");
 }

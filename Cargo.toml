@@ -57,7 +57,7 @@ edge-nal = "0.4.2"
 # libsystemd = { version = "0.7.0", path = "./static/libsystemd" }
 systemctl = "0.4.0"
 # 异步框架
-tokio = "1.44.1"
+tokio = { version = "1.44.1", features = ["full"] }
 # 异步框架
 futures-lite = "2.6.0"
 # usb设备通信(纯rust)
@@ -122,6 +122,10 @@ simple-http-server = { version = "0.6.11", path = "./static/simple-http-server" 
 web-static-pack = "0.4.4"
 # tar打包/解包
 tar = "0.4.44"
+# 全局变量
+once_cell = "1.21.3"
+# 静态变量
+static_cell = "2.1.0"
 
 # build.rs依赖
 [build-dependencies]

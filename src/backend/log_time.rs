@@ -10,7 +10,7 @@ use std::{
     time::{SystemTime, UNIX_EPOCH}
 };
 
-pub fn backend_log_time(){
+pub async fn backend_log_time() -> anyhow::Result<()> {
     // 循环写入时间到文件
     loop {
         // 获取当前UNIX时间戳（秒）
@@ -34,4 +34,7 @@ pub fn backend_log_time(){
         // 每秒执行一次 
         thread::sleep(std::time::Duration::from_secs(1));
     }
+    
+    // 返回值
+    anyhow::Ok(())
 }

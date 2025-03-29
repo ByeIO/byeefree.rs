@@ -63,27 +63,24 @@ lazy_static! {
 }
 
 /* start 封装接口 */
-/// 可以使用例如`SimpleHttpServerCli::run("-i -p 8888 --cors", "path/to/frontend.pack")?;`达到命令行的`simple-http-server -i -p 8888 --cors`同样效果.
+/// 可以使用例如`SimpleHttpServerCli::run("simple-http-server ./website-frontend/dist -p 8888 --cors --try-file ./website-frontend/dist/static/wenxiaobai.html")?;`
+/// 达到命令行的`simple-http-server ./website-frontend/dist -p 8888 --cors --try-file ./website-frontend/dist/static/wenxiaobai.html`同样效果.
 /// 类似于std::process::Command执行shell命令的效果, 但是无需安装simple-http-server.
 pub struct SimpleHttpServerCli{
     
 }
 
 impl SimpleHttpServerCli{
-    // 解压文件
-    fn init(packfile_path: &std::path::Path){
-        
-    }
-    
     // 运行服务端
-    pub fn run(cmd: String, packfile_path: &std::path::Path){
-        Self::init(&packfile_path);
-        
+    pub async fn run(cmd: String){
+        // 复杂命令解析
+        let args = shell_words::split(&cmd).expect("Failed to split command");
+        run_cli(args).await;
     }
 }
 /* end 封装接口 */
 
-fn run_cli() {
+async fn run_cli(clap_input: Vec<String>) {
     let matches = clap::App::new("Simple HTTP(s) Server")
         .setting(clap::AppSettings::ColoredHelp)
         .version(crate_version!())
@@ -252,7 +249,8 @@ fn run_cli() {
             .default_value("/")
             .takes_value(true)
             .help("Base URL to prepend in directory indexes. For reverse proxying. This prefix is supposed to be pre-stripped when reaching simple-http-server."))
-        .get_matches();
+        // 解析输入参数
+        .get_matches_from(clap_input);
 
     let root = matches
         .value_of("root")
