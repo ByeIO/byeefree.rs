@@ -4,3 +4,5 @@ target/*
 assets/ubuntu2204.wasm
 assets/ubuntu2204.wasmu
 assets/ubuntu2204.cwasm
+assets/simple_http_server_wasi.wasm
+assets/webviz_wasi.wasm

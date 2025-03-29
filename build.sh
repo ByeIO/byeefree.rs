@@ -83,3 +83,9 @@ chmod +x /usr/local/bin/byeefree
 # 打包网页前端
 bun run build
 ./tools/web-static-pack-packer directory-single ./website-frontend/dist ./assets/frontend.pack
+# 测试网页服务端
+cargo-zigbuild run --release --example http_server
+tar -cvf ./assets/frontend.tar -C ./website-frontend/dist .
+git rm --cache assets/webviz_wasi.wasm
+cargo-zigbuild run --release --example tar_unpack
+cargo-zigbuild run --release --example tokio_multithread

@@ -63,7 +63,7 @@ byeefree util role ground # 地面站
 将esp32点对点透传的数据封装为udp/tcp并通过linux TAP虚拟网卡模拟为网卡, 然后就可以使用:`byeefree mosh qsbye@[ip地址]`来连接机载计算机了.
 
 ## 开发说明
-使用nightly通道的1.85以上版本rustc编译.
+推荐使用nightly通道的1.85版本rustc编译.过高版本或过低版本都不能保证兼容性.
 
 ### 项目目录
 ```sh

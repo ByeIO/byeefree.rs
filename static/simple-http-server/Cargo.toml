@@ -35,6 +35,10 @@ repository = "https://github.com/TheWaWaR/simple-http-server"
 name = "simple-http-server"
 path = "src/main.rs"
 
+[dependencies]
+# 复杂命令解析
+shell-words = "1.1.0"
+
 [dependencies.chrono]
 version = "0.4.9"
 
