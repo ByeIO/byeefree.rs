@@ -1,0 +1,75 @@
+{
+  "name": "byeefree-vscode-extension",
+  "displayName": "byeefree_vscode_extension",
+  "description": "byeefree指挥系统vscode插件",
+  "version": "0.0.1",
+  "author": {
+    "name": "qsbye",
+    "email": "2557877116@qq.com"
+  },
+  "repository": "https://github.com/ByeIO/byeefree.rs",
+  "publisher": "qsbye",
+  "engines": {
+    "vscode": "^1.98.0"
+  },
+  "icon": "src/assets/tree.png",
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "byeefree-vscode-extension.helloWorld",
+        "title": "Hello World"
+      }
+    ],
+    "menus": {},
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "byeetree_logo",
+          "title": "侧边栏图标",
+          "icon": "src/assets/tree.svg"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.1",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.98.0",
+    "@typescript-eslint/eslint-plugin": "^8.28.0",
+    "@typescript-eslint/parser": "^8.28.0",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1",
+    "eslint": "^9.23.0",
+    "toml-json": "^1.1.4",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.8.2",
+    "webpack": "^5.98.0",
+    "webpack-cli": "^6.0.1"
+  },
+  "dependencies": {
+    "@kurkle/color": "^0.3.4",
+    "@types/rimraf": "^3.0.2",
+    "byeefree-vscode-extension": ".",
+    "copy-webpack-plugin": "^13.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  }
+}

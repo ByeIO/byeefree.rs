@@ -1,0 +1,132 @@
+name = "vscode-3d-preview"
+publisher = "tatsy"
+displayName = "vscode-3d-preview"
+description = "VS Code 3D Preview"
+version = "0.2.4"
+icon = "logo.png"
+homepage = "https://github.com/tatsy/vscode-3d-preview"
+categories = [ "Other" ]
+keywords = [ "3d", "obj", "off", "pcd", "ply", "stl", "xyz", "mesh", "polygon", "point cloud", "point set", "viewer", "vscode" ]
+activationEvents = [ "onCustomEditor:3dpreview.viewer" ]
+main = "./out/extension.js"
+
+[repository]
+type = "git"
+url = "https://github.com/tatsy/vscode-3d-preview"
+
+[engines]
+vscode = "^1.96.0"
+
+[contributes]
+[contributes.capabilities]
+[contributes.capabilities.untrustedWorkspaces]
+supported = true
+
+[[contributes.customEditors]]
+viewType = "3dpreview.viewer"
+displayName = "3D Viewer Light"
+
+[[contributes.customEditors.selector]]
+filenamePattern = "*.obj"
+
+[[contributes.customEditors.selector]]
+filenamePattern = "*.stl"
+
+[[contributes.customEditors.selector]]
+filenamePattern = "*.off"
+
+[[contributes.customEditors.selector]]
+filenamePattern = "*.ply"
+
+[[contributes.customEditors.selector]]
+filenamePattern = "*.pcd"
+
+[[contributes.customEditors.selector]]
+filenamePattern = "*.xyz"
+
+[contributes.configuration]
+title = "VSCode 3D Preview"
+
+[contributes.configuration.properties]
+[contributes.configuration.properties."3dpreview.hideControlsOnStart"]
+type = "boolean"
+default = false
+description = "Fold the control panel if true is specified."
+
+[contributes.configuration.properties."3dpreview.showPoints"]
+type = "boolean"
+default = false
+description = "Show point cloud."
+
+[contributes.configuration.properties."3dpreview.showWireframe"]
+type = "boolean"
+default = false
+description = "Show wireframe."
+
+[contributes.configuration.properties."3dpreview.showMesh"]
+type = "boolean"
+default = true
+description = "Show mesh triangles."
+
+[contributes.configuration.properties."3dpreview.showGridHelper"]
+type = "boolean"
+default = true
+description = "Show grid helper."
+
+[contributes.configuration.properties."3dpreview.showAxesHelper"]
+type = "boolean"
+default = true
+description = "Show axes helper."
+
+[contributes.configuration.properties."3dpreview.backgroundColor"]
+type = "string"
+default = "#121212"
+description = "Default background color."
+
+[contributes.configuration.properties."3dpreview.pointColor"]
+type = "string"
+default = "#cc0000"
+description = "Default point color."
+
+[contributes.configuration.properties."3dpreview.pointSize"]
+type = "number"
+default = 0.5
+description = "Default point size."
+
+[contributes.configuration.properties."3dpreview.wireframeColor"]
+type = "string"
+default = "#0000ff"
+description = "Default wireframe color."
+
+[contributes.configuration.properties."3dpreview.wireframeWidth"]
+type = "number"
+default = 0.5
+description = "Default wireframe width."
+
+[contributes.configuration.properties."3dpreview.fogDensity"]
+type = "number"
+default = 0
+description = "Fog density."
+
+[scripts]
+"vscode:prepublish" = "npm run compile"
+compile = "tsc -p ./"
+watch = "tsc -watch -p ./"
+pretest = "npm run compile && npm run lint"
+lint = "eslint src --ext ts"
+test = "node ./out/test/runTest.js"
+
+[devDependencies]
+"@types/glob" = "^8.1.0"
+"@types/mocha" = "^10.0.10"
+"@types/node" = "22.x"
+"@types/vscode" = "^1.96.0"
+"@typescript-eslint/eslint-plugin" = "^8.20.0"
+"@typescript-eslint/parser" = "^8.20.0"
+eslint = "^9.18.0"
+glob = "^11.0.1"
+mocha = "^11.0.1"
+tslint = "^6.1.3"
+typescript = "^5.7.3"
+vsce = "^2.15.0"
+vscode-test = "^1.6.1"

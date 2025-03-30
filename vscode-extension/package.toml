@@ -1,0 +1,92 @@
+# 使用[https://www.json.cn/json2toml/]实现toml和json互转
+# 根据[https://www.reddit.com/r/npm/comments/we57eb/can_i_make_a_packageyaml_instead/]应该是可以使用toml配置文件的
+# json5/jsonc才支持注释
+name = "byeefree-vscode-extension"
+displayName = "byeefree_vscode_extension"
+description = "byeefree指挥系统vscode插件"
+version = "0.0.1"
+repository = "https://github.com/ByeIO/byeefree.rs"
+publisher = "qsbye"
+icon = "src/assets/tree.png"
+categories = [ "Other" ]
+main = "./dist/extension.js"
+
+[author]
+name = "qsbye"
+email = "2557877116@qq.com"
+
+[engines]
+vscode = "^1.98.0"
+
+# 这行不要删
+[contributes]
+# 命令模板
+[[contributes.commands]]
+command = "byeefree-vscode-extension.helloWorld"
+title = "欢迎使用byeefree指挥系统"
+
+# 打开主界面
+[[contributes.commands]]
+command = "byeefree-vscode-extension.launcher"
+title = "打开主界面"
+
+# 配置编辑器右上角显示的标题
+[[contributes.menus."editor/title"]]
+when = "resourceLangId == javascript"
+command = "kuizuo-plugin.helloWorld"
+group = "navigation"
+
+# 这行不要删
+[contributes.viewsContainers]
+# 相当于json的数组
+[[contributes.viewsContainers.activitybar]]
+id = "byeetreeLauncher"
+title = "活动栏图标"
+icon = "src/assets/tree.svg"
+
+# 自定义侧边栏内view的实现
+[contributes.views]
+
+# 和 viewsContainers 的id对应
+[[contributes.views.launcher]]
+id = "mainPage"
+name = "主界面"
+
+# 编译命令
+[scripts]
+"vscode:prepublish" = "npm run package"
+compile = "webpack"
+watch = "webpack --watch"
+package = "webpack --mode production --devtool hidden-source-map"
+compile-tests = "tsc -p . --outDir out"
+watch-tests = "tsc -p . -w --outDir out"
+pretest = "npm run compile-tests && npm run compile && npm run lint"
+lint = "eslint src"
+test = "vscode-test"
+
+# 开发依赖
+[devDependencies]
+"@types/cors" = "^2.8.17"
+"@types/express" = "^5.0.1"
+"@types/mocha" = "^10.0.10"
+"@types/node" = "20.x"
+"@types/vscode" = "^1.98.0"
+"@typescript-eslint/eslint-plugin" = "^8.28.0"
+"@typescript-eslint/parser" = "^8.28.0"
+"@vscode/test-cli" = "^0.0.10"
+"@vscode/test-electron" = "^2.4.1"
+eslint = "^9.23.0"
+toml-json = "^1.1.4"
+ts-loader = "^9.5.2"
+typescript = "^5.8.2"
+webpack = "^5.98.0"
+webpack-cli = "^6.0.1"
+
+# 运行依赖
+[dependencies]
+"@kurkle/color" = "^0.3.4"
+"@types/rimraf" = "^3.0.2"
+byeefree-vscode-extension = "."
+copy-webpack-plugin = "^13.0.0"
+cors = "^2.8.5"
+express = "^4.21.2"
